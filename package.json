@@ -1,5 +1,6 @@
 {
   "name": "gtm-project",
+  "homepage": "http://CkBeam.github.io/gtm-project",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

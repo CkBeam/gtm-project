@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/gtm-project/static/css/main.56aee900.css",
+    "main.js": "/gtm-project/static/js/main.f4fe9365.js",
+    "index.html": "/gtm-project/index.html",
+    "main.56aee900.css.map": "/gtm-project/static/css/main.56aee900.css.map",
+    "main.f4fe9365.js.map": "/gtm-project/static/js/main.f4fe9365.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.56aee900.css",
+    "static/js/main.f4fe9365.js"
+  ]
+}

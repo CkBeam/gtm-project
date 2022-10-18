@@ -1,70 +1,132 @@
-# Getting Started with Create React App
+# GTM - Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This documents purpose is to assist with getting the test environement setup, which demonstrates how to use Google Tag Manager in a React Environement.
 
-## Available Scripts
+## NPM Setup
 
-In the project directory, you can run:
+```
+navigate to the root directory and npm install, npm start.
+```
 
-### `npm start`
+### You can also manually add you Google Tag Manager tags into the `<head>` and `<body>` section of your index.html, if you do not want to use a npm package.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Note: This project is using extra npm packages and
+create-react-app
 
-### `npm test`
+```
+"react-router-dom": "^6.4.1",
+"react-gtm-module": "^2.0.11"
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Google Tag Manager - Setup/Changes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### **When using GA4**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+-   Setup Google Analytics: GA4 Configuration
+-   <b>Make sure to uncheck </b> _"Send a page view event when this configuration loads"_ (unticking this allows history event to fire correctly on initial page load).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`Below is the configuration, add your own measurement id.`
 
-### `npm run eject`
+![image](https://user-images.githubusercontent.com/113032974/196537138-c9e8ef99-b4d0-4fed-913f-99ec46cae573.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+`Add the following code to your index.js`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `DO NOT USE the gtmId below `, this is for my personal account. You will need to add your own gtmId
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+const tagManagerArgs = {
+    gtmId: 'GTM-MMBS767',
+};
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+TagManager.initialize(tagManagerArgs);
+```
 
-## Learn More
+![image](https://user-images.githubusercontent.com/113032974/194597255-a237e1f2-32dc-4d61-b51e-da5baa07b607.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+` Create a trigger called All history change (or whatever you'd like)`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![image](https://user-images.githubusercontent.com/113032974/196515292-d9b75b74-3a2a-4366-bbc5-5f9beead6465.png)
 
-### Code Splitting
+` Create your customer trigger`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![custom-event-trigger](https://user-images.githubusercontent.com/113032974/196514534-16909cd4-c7f7-4582-bb7a-684e1ba140cf.PNG)
 
-### Analyzing the Bundle Size
+`Here is the settings for the trigger`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![trigger-settings](https://user-images.githubusercontent.com/113032974/196514564-037fae70-ee3a-4340-95e4-07bd237adfba.PNG)
 
-### Making a Progressive Web App
+`Here is a list of the triggers I am using`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+![image](https://user-images.githubusercontent.com/113032974/196516100-57dc7c3b-7cd4-4bb1-9f60-9d2a2f9b3cc1.png)
 
-### Advanced Configuration
+`Create a new tag for the trigger`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![custom-tag](https://user-images.githubusercontent.com/113032974/196514544-5f5f6f7a-fafc-44e1-8487-efdd858afa20.PNG)
 
-### Deployment
+`It will be a custom GA4 Event` <br>
+(Note: Make sure to click "Advanced Settings" dropdown and change tag firing options to once per page, otherwise it fires the event multiple times on one click.)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+![image](https://user-images.githubusercontent.com/113032974/196520469-59bc6828-e8d4-4c0a-86a9-54da97957a0c.png)
 
-### `npm run build` fails to minify
+`For page views, I just added this code to my app.js, to track any page changes, and passed in the page_location object to pull the url and title of the page.`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+
+    window.dataLayer.push({
+        event: 'virtualPageview',
+        page_location: {
+            url: window.location.href,
+            title: document.title,
+        },
+    });
+
+```
+
+`To update the datalayer, I created a function that pushes the event name.`
+
+```
+
+const PushTagManager = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: "test_button_event",
+    });
+};
+
+```
+
+`Below is a function with all the conventional parameters that can be passed in, as I am just using "event" in my implementation, but other data can be passed. These parameters can be renamed, however they should have use this structure.`
+
+```
+
+    window.dataLayer.push({
+        event: 'event',
+        eventProps: {
+            category: category,
+            action: action,
+            label: label,
+            value: value
+        }
+    });
+
+```
+
+## Create DataLayer Variables
+
+`These are built in DataLayer Variables. You will most likely need to add all of the history related varibles in manually, and create the "Event" custom variable. `
+
+![Capture](https://user-images.githubusercontent.com/113032974/194591388-a33e3e44-4516-44d5-89fe-962a88d2a449.PNG)
+
+## Google Analytics - Setup/Changes
+
+` When using GA4 -`
+
+```
+
+Turn off Enhanced measurement. It does not work well with Single Page Applications, all of the time. Google analytics does not take into account url fragments (when the # symbols is in url), we fix this by manually overriding the page_location parameter in all other GA4 tags as well(including config tag and other event tags). This applies to future GA4 tags as well.
+
+```

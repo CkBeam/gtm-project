@@ -1,0 +1,13 @@
+.destroy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.content {
+    width: 60%;
+    margin: auto;
+    padding-bottom: 2rem;
+    text-align: left;
+}

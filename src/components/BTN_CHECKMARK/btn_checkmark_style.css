@@ -1,0 +1,12 @@
+.checkmark {
+    position: absolute;
+    right: calc(15px + 19.5rem);
+    top: -0.5rem;
+    left: -13px;
+    height: 1.3rem;
+    transition: all 0.3s ease-in;
+}
+
+.non-active {
+    display: none;
+}

@@ -7,9 +7,17 @@ const Nav = () => {
         <>
             <nav className={classes.nav}>
                 <h1>GTM Project</h1>
-                <Link to='/'>Home</Link>
-                <Link to='about'>About</Link>
-                <Link to='gallery'>Gallery</Link>
+                <ul className={classes.navLinks}>
+                    <li className={classes.linkItem}>
+                        <Link to='/'>Home</Link>
+                    </li>
+                    <li className={classes.linkItem}>
+                        <Link to='about'>About</Link>
+                    </li>
+                    <li className={classes.linkItem}>
+                        <Link to='gallery'>Gallery</Link>
+                    </li>
+                </ul>
             </nav>
         </>
     );
